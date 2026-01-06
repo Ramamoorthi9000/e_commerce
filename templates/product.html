@@ -1,0 +1,46 @@
+{% extends './basic/base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <!-- row-cols-2 for mobile (xs), row-cols-md-5 for medium+ -->
+    <div class="row row-cols-2 row-cols-md-5 g-3">
+        {% for product in products %}
+        <div class="col">
+            <a href="{% url 'shop:product_show' product.category.name product.name %}" class="text-decoration-none text-dark">
+                <div class="card h-100" style="font-size: 0.85rem;">
+                    <!-- Product Image -->
+                    {% if product.product_image %}
+                    <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                    <img src="" class="card-img-top" alt="No image">
+                    {% endif %}
+
+                    <div class="card-body p-2">
+                        <!-- Product Name -->
+                        <h6 class="card-title mb-1">{{ product.name }}</h6>
+
+                        <!-- Prices -->
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted"><s>₹{{ product.original_price }}</s></small>
+                            <small class="text-danger fw-bold">₹{{ product.selling_price }}</small>
+                        </div>
+
+                        <!-- Trending Badge -->
+                        {% if product.trending %}
+                            <span class="badge bg-success mb-1">Trending</span>
+                        {% endif %}
+
+                        <!-- Quantity -->
+                        <p class="mb-0"><small>Qty: {{ product.qantity }}</small></p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p>No products found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
